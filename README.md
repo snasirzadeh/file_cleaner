@@ -27,3 +27,7 @@ The file would include lines of directories containing files to be removed, like
 8) Write a systemd script and timer to run it.
 
 8) Send a telegram notificaton if there is an error.
+
+Start with this script, look for options in it and learn.
+
+[script.sh](https://gist.github.com/aminvakil/6fba2c389b57c7dab0cdb2009f50c8e2)
