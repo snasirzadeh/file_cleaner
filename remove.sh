@@ -21,12 +21,6 @@ fi
 REMOVE_FILE_DIR="/home/sepehr/files"
 REMOVE_FILE="${REMOVE_FILE_DIR}/remove.txt"
 
-# Check if the provided path is a directory
-if [ ! -d "$TARGET_DIR" ]; then
-  echo "Error: $TARGET_DIR is not a directory or does not exist."
-  exit 1
-fi
-
 # Check if the remove.txt file exists
 if [ ! -f "$REMOVE_FILE" ]; then
   echo "Error: $REMOVE_FILE does not exist."
