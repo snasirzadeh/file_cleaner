@@ -27,20 +27,15 @@ if [ ! -f "$REMOVE_FILE" ]; then
   exit 1
 fi
 
-# Read remove.txt and delete the listed files
-while IFS= read -r FILE_PATH; do
-  FULL_PATH="$TARGET_DIR/$FILE_PATH"
-  
-  # Check if the file exists and is a file
-  if [ -f "$FULL_PATH" ]; then
-    rm -f "$FULL_PATH"
-    echo "Removed: $FULL_PATH"
-  else
-    echo "Skipping: $FULL_PATH (not found or not a file)"
-  fi
+while IFS= read -r DIR || [[ -n "$DIR" ]]; do
+    # Skip empty lines or lines starting with #
+    if [[ -z "$DIR" || "$DIR" =~ ^# ]]; then
+        continue
+    fi
+
+    # Call the cleanup function
+    cleanup "$DIR"
 done < "$REMOVE_FILE"
 
-echo "Cleanup completed based on $REMOVE_FILE."
+echo "Cleanup completed."
 
-# Optional: Explicit exit
-exit 0
