@@ -32,6 +32,10 @@ while IFS= read -r DIR || [[ -n "$DIR" ]]; do
     # Skip empty lines or lines starting with #
     if [[ -z "$DIR" || "$DIR" =~ ^# ]]; then
         continue
+    # check if the path contains a space
+    elif [[ "$DIR" == *" "* ]]; then
+	echo "Error $REMOVE_FILE contains a space."
+	exit 1
     fi
 
     # Call the cleanup function
