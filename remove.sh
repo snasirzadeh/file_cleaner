@@ -9,3 +9,4 @@ cleanup() {
   trap - SIGINT SIGTERM ERR EXIT
   # script cleanup here
 }
+echo "sepehr"
