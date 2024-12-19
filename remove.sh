@@ -17,8 +17,9 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-TARGET_DIR="$1"
-REMOVE_FILE="$TARGET_DIR/remove.txt"
+# Specify the directory containing remove.txt
+REMOVE_FILE_DIR="/home/sepehr/files"
+REMOVE_FILE="${REMOVE_FILE_DIR}/remove.txt"
 
 # Check if the provided path is a directory
 if [ ! -d "$TARGET_DIR" ]; then
