@@ -2,20 +2,21 @@
 
 set -x
 
-# Function to clean up or handle interrupts
+# Define the cleanup function
 cleanup() {
-  echo "Script interrupted or finished. Cleaning up..."
-  exit
+    local DIR=$1
+
+    if [[ -d "$DIR" ]]; then
+        echo "Cleaning up files inside directory: $DIR"
+
+        # Remove only files inside the directory, not subdirectories
+        find "$DIR" -maxdepth 1 -type f -exec rm -f {} \;
+
+        echo "Files inside $DIR have been removed."
+    else
+        echo "Warning: Directory not found or invalid: $DIR"
+    fi
 }
-
-# Set up the trap to call the cleanup function on exit or interrupt
-trap cleanup EXIT INT TERM
-
-# Check if the directory and remove.txt file are provided
-if [ -z "$1" ]; then
-  echo "Usage: $0 <directory>"
-  exit 1
-fi
 
 # Specify the directory containing remove.txt
 REMOVE_FILE_DIR="/home/sepehr/files"
