@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -x
+#set -x
 
 # Define the cleanup function
 cleanup() {
@@ -10,7 +10,7 @@ cleanup() {
         echo "Cleaning up files inside directory: $DIR"
 
         # Remove only files inside the directory, not subdirectories
-        find "$DIR" -maxdepth 1 -type f -exec rm -f {} \;
+        find "$DIR" -type f -exec rm -f {} \;
 
         echo "Files inside $DIR have been removed."
     else
