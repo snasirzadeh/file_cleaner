@@ -12,21 +12,23 @@ The file would include lines of directories containing files to be removed, like
 
 1) Just write a script which does this.
 
-2) Just remove files inside the directory, not the directory itself.
+2) Read directory from .env, place an .env.example in source code, and git ignore .env.
 
-3) Write a crontab file which runs it every minute.
+3) Just remove files inside the directory, not the directory itself.
 
-4) Log files which are getting removed in /home/user/files/remove.log
+4) Write a crontab file which runs it every minute.
 
-5) Log files in /home/user/files/logs/20241218.log, 20241219.log, based on date.
+5) Log files which are getting removed in /home/user/files/remove.log
 
-6) Ensure lines start with `/home/user/files` and exit with non-zero return code if a directory does not start with that.
+6) Log files in /home/user/files/logs/20241218.log, 20241219.log, based on date.
 
-7) Check for spaces in each line and ensure no line has a space in it, if there is, exit with non-zero return code.
+7) Ensure lines start with `/home/user/files` and exit with non-zero return code if a directory does not start with that.
 
-8) Write a systemd script and timer to run it.
+8) Check for spaces in each line and ensure no line has a space in it, if there is, exit with non-zero return code.
 
-8) Send a telegram notificaton if there is an error.
+9) Write a systemd script and timer to run it.
+
+10) Send a telegram notificaton if there is an error.
 
 Start with this script, look for options in it and learn.
 
