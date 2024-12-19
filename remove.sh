@@ -2,11 +2,50 @@
 
 set -x
 
-set -Eeuo pipefail
-trap cleanup SIGINT SIGTERM ERR EXIT
-
+# Function to clean up or handle interrupts
 cleanup() {
-  trap - SIGINT SIGTERM ERR EXIT
-  # script cleanup here
+  echo "Script interrupted or finished. Cleaning up..."
+  exit
 }
-echo "sepehr"
+
+# Set up the trap to call the cleanup function on exit or interrupt
+trap cleanup EXIT INT TERM
+
+# Check if the directory and remove.txt file are provided
+if [ -z "$1" ]; then
+  echo "Usage: $0 <directory>"
+  exit 1
+fi
+
+TARGET_DIR="$1"
+REMOVE_FILE="$TARGET_DIR/remove.txt"
+
+# Check if the provided path is a directory
+if [ ! -d "$TARGET_DIR" ]; then
+  echo "Error: $TARGET_DIR is not a directory or does not exist."
+  exit 1
+fi
+
+# Check if the remove.txt file exists
+if [ ! -f "$REMOVE_FILE" ]; then
+  echo "Error: $REMOVE_FILE does not exist."
+  exit 1
+fi
+
+# Read remove.txt and delete the listed files
+while IFS= read -r FILE_PATH; do
+  FULL_PATH="$TARGET_DIR/$FILE_PATH"
+  
+  # Check if the file exists and is a file
+  if [ -f "$FULL_PATH" ]; then
+    rm -f "$FULL_PATH"
+    echo "Removed: $FULL_PATH"
+  else
+    echo "Skipping: $FULL_PATH (not found or not a file)"
+  fi
+done < "$REMOVE_FILE"
+
+echo "Cleanup completed based on $REMOVE_FILE."
+
+# Optional: Explicit exit
+exit 0
