@@ -2,6 +2,14 @@
 
 #set -x
 
+#load environment variable from .env file
+if [[ -f .env ]]; then
+    export $(grep -v '^#' .env | xargs)
+else
+    echo "Error: .env file not found."
+    exit 1
+fi
+
 # Define the cleanup function
 cleanup() {
     local DIR=$1
@@ -9,7 +17,7 @@ cleanup() {
     if [[ -d "$DIR" ]]; then
         echo "Cleaning up files inside directory: $DIR"
 
-        # Remove only files inside the directory, not subdirectories
+        # Remove only files inside the directorys
         find "$DIR" -type f -exec rm -f {} \;
 
         echo "Files inside $DIR have been removed."
@@ -18,15 +26,6 @@ cleanup() {
     fi
 }
 
-# Specify the directory containing remove.txt
-REMOVE_FILE_DIR="/home/sepehr/files"
-REMOVE_FILE="${REMOVE_FILE_DIR}/remove.txt"
-
-# Check if the remove.txt file exists
-if [ ! -f "$REMOVE_FILE" ]; then
-  echo "Error: $REMOVE_FILE does not exist."
-  exit 1
-fi
 
 while IFS= read -r DIR || [[ -n "$DIR" ]]; do
     # Skip empty lines or lines starting with #
@@ -34,13 +33,13 @@ while IFS= read -r DIR || [[ -n "$DIR" ]]; do
         continue
     # check if the path contains a space
     elif [[ "$DIR" == *" "* ]]; then
-	echo "Error $REMOVE_FILE contains a space."
+	echo "Error remove file contains a space."
 	exit 1
     fi
 
     # Call the cleanup function
     cleanup "$DIR"
-done < "$REMOVE_FILE"
+done < "$REMOVE_FILE_PATH"
 
 echo "Cleanup completed."
 
