@@ -2,13 +2,20 @@
 
 #set -x
 
-#load environment variable from .env file
-if [[ -f .env ]]; then
-    export $(grep -v '^#' .env | xargs)
-else
-    echo "Error: .env file not found."
-    exit 1
-fi
+#set -Eeuo pipefail
+
+# snippet from https://stackoverflow.com/a/246128/10102404
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+cd "$script_dir"
+
+    #load environment variable from .env file
+    if [[ -f ".env" ]]; then
+    	source .env
+    else
+    	echo "Error: .env file not found."
+    	exit 1
+    fi
 
 # Define the cleanup function
 cleanup() {
