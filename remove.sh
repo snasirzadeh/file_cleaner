@@ -17,6 +17,8 @@ cd "$script_dir"
     	exit 1
     fi
 
+mkdir -p "$LOG_DIR"
+
 # Define the cleanup function
 cleanup() {
     local DIR=$1
