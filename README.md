@@ -28,9 +28,11 @@ The file would include lines of directories containing files to be removed, like
 
 9) Ensure each line only contains valid characters.
 
-10) Write a systemd script and timer to run it.
+10) Lock script, so only one instance is getting executed at a time.
 
-11) Send a telegram notificaton if there is an error.
+11) Write a systemd script and timer to run it.
+
+12) Send a telegram notificaton if there is an error.
 
 Start with this script, look for options in it and learn.
 
