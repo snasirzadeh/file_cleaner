@@ -22,9 +22,9 @@ The file would include lines of directories containing files to be removed, like
 
 6) Log files in /home/user/files/logs/20241218.log, 20241219.log, based on date.
 
-7) Ensure lines start with `/home/user/files` and exit with non-zero return code if a directory does not start with that.
+7) Check for spaces in each line and ensure no line has a space in it, if there is, exit with non-zero return code.
 
-8) Check for spaces in each line and ensure no line has a space in it, if there is, exit with non-zero return code.
+8) Ensure lines start with `/home/user/files` and exit with non-zero return code if a directory does not start with that.
 
 9) Write a systemd script and timer to run it.
 
