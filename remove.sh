@@ -20,7 +20,7 @@ cd "$script_dir"
     if [[ -f ".env" ]]; then
     	source .env
     else
-    	echo "Error: .env file not found."
+    	echo 'Error: .env file not found.'
     	exit 1
     fi
 
@@ -33,12 +33,8 @@ cleaner() {
     local DIR=$1
 
     if [[ -d "$DIR" ]]; then
-        echo "Cleaning up files inside directory: $DIR" >> "$LOG_FILE"
-
         # Remove only files inside the directorys
-        find "$DIR" -type f -exec rm -f {} \;
-
-        echo "Files inside $DIR have been removed." >> "$LOG_FILE"
+        find "$DIR" -type f -print -exec rm -f {} \; >> "$LOG_FILE"
     else
         echo "Directory not found or invalid: $DIR" >> "$LOG_FILE"
     fi
@@ -51,7 +47,7 @@ while IFS= read -r DIR || [[ -n "$DIR" ]]; do
         continue
     # check if the path contains a space
     elif [[ "$DIR" == *" "* ]]; then
-	echo "Error remove file contains a space." >> "$LOG_FILE"
+	echo 'Error remove file contains a space.' >> "$LOG_FILE"
 	exit 1
     fi
 
@@ -59,5 +55,5 @@ while IFS= read -r DIR || [[ -n "$DIR" ]]; do
     cleaner "$DIR"
 done < "$REMOVE_FILE_PATH"
 
-echo "Cleanup completed. $(date +%Y_%m_%d)" >> "$LOG_FILE"
+echo "Cleanup completed. $(date +%Y/%m/%d_%H:%M)" >> "$LOG_FILE"
 
