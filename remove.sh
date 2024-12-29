@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 
-#set -x
 
-#set -Eeuo pipefail
+# Check if another instance of script is running
+if pidof -o %PPID -x "$0" >/dev/null; then
+  printf >&2 '%s\n' "ERROR: Script $0 already running"
+  exit 1
+fi
 
-# snippet from https://stackoverflow.com/a/246128/10102404
+set -x
+
+set -Eeuo pipefail
+trap cleanup SIGINT SIGTERM ERR
+
+# script directory
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
-
 cd "$script_dir"
 
     #load environment variable from .env file
@@ -16,12 +23,13 @@ cd "$script_dir"
     	echo "Error: .env file not found."
     	exit 1
     fi
+
 #Create the log directory if it doesn't exist
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/$(date +%Y%m%d).log"
 
-# Define the cleanup function
-cleanup() {
+# Define the cleaner function
+cleaner() {
     local DIR=$1
 
     if [[ -d "$DIR" ]]; then
@@ -47,8 +55,8 @@ while IFS= read -r DIR || [[ -n "$DIR" ]]; do
 	exit 1
     fi
 
-    # Call the cleanup function
-    cleanup "$DIR"
+    # Call the cleaner function
+    cleaner "$DIR"
 done < "$REMOVE_FILE_PATH"
 
 echo "Cleanup completed. $(date +%Y_%m_%d)" >> "$LOG_FILE"
