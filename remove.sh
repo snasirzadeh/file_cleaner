@@ -7,7 +7,7 @@ if pidof -o %PPID -x "$0" >/dev/null; then
   exit 1
 fi
 
-set -x
+#set -x
 
 set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR
@@ -30,13 +30,13 @@ LOG_FILE="$LOG_DIR/$(date +%Y%m%d).log"
 
 # Define the cleaner function
 cleaner() {
-    local DIR=$1
+    local LINE=$1
 
-    if [[ -d "$DIR" ]]; then
+    if [[ -d "$LINE" ]]; then
         # Remove only files inside the directorys
-        find "$DIR" -type f -print -exec rm -f {} \; >> "$LOG_FILE"
+        find "$LINE" -type f -print -exec rm -f {} \; >> "$LOG_FILE"
     else
-        echo "Directory not found or invalid: $DIR" >> "$LOG_FILE"
+        echo "Directory not found or invalid: $LINE" >> "$LOG_FILE"
     fi
 }
 
@@ -56,8 +56,12 @@ done < "$REMOVE_FILE_PATH"
 
 while IFS= read -r LINE; do
 
+    if [[ -z "$LINE" || "$LINE" =~ ^# ]]; then
+        continue
+    else
     # Call the cleaner function
     cleaner "$LINE"
+    fi
 done < "$REMOVE_FILE_PATH"
 
 echo "Cleanup completed. $(date +%Y/%m/%d_%H:%M)" >> "$LOG_FILE"
