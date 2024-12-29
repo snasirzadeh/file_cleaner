@@ -45,15 +45,19 @@ while IFS= read -r DIR || [[ -n "$DIR" ]]; do
     # Skip empty lines or lines starting with #
     if [[ -z "$DIR" || "$DIR" =~ ^# ]]; then
         continue
-    # check if the path contains a space
-    elif [[ "$DIR" == *" "* ]]; then
-	echo 'Error remove file contains a space.' >> "$LOG_FILE"
+
+    # Check for Invalid Filename 
+    elif [[ "$DIR" =~ $INVALID_FILENAME ]]; then
+	echo "Invalid Filename : $DIR" >> "$LOG_FILE"
 	exit 1
     fi
+    
+done < "$REMOVE_FILE_PATH"
+
+while IFS= read -r LINE; do
 
     # Call the cleaner function
-    cleaner "$DIR"
+    cleaner "$LINE"
 done < "$REMOVE_FILE_PATH"
 
 echo "Cleanup completed. $(date +%Y/%m/%d_%H:%M)" >> "$LOG_FILE"
-
