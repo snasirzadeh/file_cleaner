@@ -16,6 +16,8 @@ trap cleanup SIGINT SIGTERM ERR
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 cd "$script_dir"
 
+
+
     #load environment variable from .env file
     if [[ -f ".env" ]]; then
     	source .env
@@ -28,6 +30,12 @@ cd "$script_dir"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/$(date +%Y%m%d).log"
 
+# Define the logme function
+logme() {
+    local message=$1
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $message" >> "$LOG_FILE"
+}
+
 # Define the cleaner function
 cleaner() {
     local LINE=$1
@@ -36,7 +44,7 @@ cleaner() {
         # Remove only files inside the directorys
         find "$LINE" -type f -print -exec rm -f {} \; >> "$LOG_FILE"
     else
-        echo "Directory not found or invalid: $LINE" >> "$LOG_FILE"
+	logme "Directory not found or invalid: $LINE"
     fi
 }
 
@@ -48,7 +56,7 @@ while IFS= read -r DIR || [[ -n "$DIR" ]]; do
 
     # Check for Invalid Filename 
     elif [[ "$DIR" =~ $INVALID_FILENAME ]]; then
-	echo "Invalid Filename : $DIR" >> "$LOG_FILE"
+	logme "Invalid Filename : $DIR"
 	exit 1
     fi
     
@@ -64,4 +72,5 @@ while IFS= read -r LINE; do
     fi
 done < "$REMOVE_FILE_PATH"
 
-echo "Cleanup completed. $(date +%Y/%m/%d_%H:%M)" >> "$LOG_FILE"
+logme "Cleanup completed."
+
