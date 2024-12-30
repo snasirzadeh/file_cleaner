@@ -7,7 +7,7 @@ if pidof -o %PPID -x "$0" >/dev/null; then
   exit 1
 fi
 
-#set -x
+set -x
 
 set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR
@@ -53,7 +53,9 @@ while IFS= read -r DIR || [[ -n "$DIR" ]]; do
     # Skip empty lines or lines starting with #
     if [[ -z "$DIR" || "$DIR" =~ ^# ]]; then
         continue
-
+    elif [[ "$DIR" != ${REMOVE_PATH}* ]]; then
+        logme "Invalid Directory Path : $DIR"
+        exit 1
     # Check for Invalid Filename 
     elif [[ "$DIR" =~ $INVALID_FILENAME ]]; then
 	logme "Invalid Filename : $DIR"
