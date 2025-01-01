@@ -2,15 +2,13 @@
 
 set -x
 set -Eeuo pipefail
-trap cleanup SIGINT SIGTERM ERR
+trap cleanup SIGINT SIGTERM ERR EXIT
 
 # Define the cleanup function
 cleanup() {
-    logme "Script terminated"
     rm -f $LOCK_FILE
     exit 1
 }
-############
 
 LOCK_FILE="/var/lock/remove.lock"
 # Check if another instance of script is running
@@ -22,12 +20,9 @@ fi
 # Create the lock file     
 touch $LOCK_FILE
 
-
 # script directory
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 cd "$script_dir"
-
-
 
 #load environment variable from .env file
 if [[ -f ".env" ]]; then
@@ -46,10 +41,11 @@ LOG_FILE="$LOG_DIR/$(date +%Y%m%d).log"
 logme() {
     local message=$1
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $message" >> "$LOG_FILE"
+    curl -s -X POST https://api.telegram.org/bot$BOT_TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$(date '+%Y-%m-%d %H:%M:%S') - $message" > /dev/null
 
 }
 
-# Define the cleaner function
+#  Define the cleaner function
 cleaner() {
     local LINE=$1
 
@@ -87,5 +83,5 @@ while IFS= read -r LINE; do
     fi
 done < "$REMOVE_FILE_PATH"
 
-rm -f $LOCK_FILE && logme "Cleanup completed."
+logme "Cleanup completed."
 
