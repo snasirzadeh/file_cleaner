@@ -54,6 +54,7 @@ cleaner() {
         find "$LINE" -type f -print -exec rm -f {} \; >> "$LOG_FILE"
     else
 	logme "Directory not found or invalid: $LINE"
+	exit 1
     fi
 }
 
