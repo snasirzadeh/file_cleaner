@@ -1,0 +1,10 @@
+[Unit]
+Description=File-Cleaner Timer
+
+[Timer]
+OnBootSec=5m
+OnCalendar=*:0/2
+Persistent=yes
+
+[Install]
+WantedBy=timers.target

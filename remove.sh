@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-set -x
+#set -x
 set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
 
 # Define the cleanup function
 cleanup() {
     rm -f $LOCK_FILE
-    exit 1
+    exit 0
 }
 
 LOCK_FILE="/var/lock/remove.lock"
@@ -29,7 +29,7 @@ if [[ -f ".env" ]]; then
     source .env
 else
     echo 'Error: .env file not found.'
-    exit 1
+    exit 1 
 fi
 
 # Create the log directory if it doesn't exist
