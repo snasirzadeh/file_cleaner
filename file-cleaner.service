@@ -1,0 +1,13 @@
+[Unit]
+Description=File-Cleaner service
+
+[Service]
+ExecStart=/home/user/file_cleaner/remove.sh
+Type=simple
+Restart=on-failure
+RestartSec=5
+User=user
+Group=user
+
+[Install]
+WantedBy=default.target
