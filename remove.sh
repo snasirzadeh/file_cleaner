@@ -20,10 +20,6 @@ fi
 # Create the lock file     
 touch $LOCK_FILE
 
-# script directory
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
-cd "$script_dir"
-
 # Create the log directory if it doesn't exist
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/$(date +%Y%m%d).log"
