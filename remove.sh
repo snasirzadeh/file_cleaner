@@ -24,14 +24,6 @@ touch $LOCK_FILE
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 cd "$script_dir"
 
-#load environment variable from .env file
-if [[ -f ".env" ]]; then
-    source .env
-else
-    echo 'Error: .env file not found.'
-    exit 1 
-fi
-
 # Create the log directory if it doesn't exist
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/$(date +%Y%m%d).log"
