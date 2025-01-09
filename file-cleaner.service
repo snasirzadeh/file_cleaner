@@ -3,6 +3,7 @@ Description=File-Cleaner service
 
 [Service]
 ExecStart=/home/user/file_cleaner/remove.sh
+EnvironmentFile=/home/user/file_cleaner/.env.sample
 Type=simple
 Restart=on-failure
 RestartSec=5
