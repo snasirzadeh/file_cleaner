@@ -2,6 +2,7 @@
 Description=File-Cleaner service
 
 [Service]
+WorkingDirectory=/home/user/file_cleaner/
 ExecStart=/home/user/file_cleaner/remove.sh
 EnvironmentFile=/home/user/file_cleaner/.env.sample
 Type=simple
